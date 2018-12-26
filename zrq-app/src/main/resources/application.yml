@@ -2,11 +2,11 @@ server:
   port: 8080
 spring:
   application:
-    name: zrq-app # Ó¦ÓÃÃû³Æ
+    name: zrq-app # åº”ç”¨åç§°
 eureka:
   client:
-    service-url: # EurekaServerµØÖ·
+    service-url: # EurekaServeråœ°å€
       defaultZone: http://127.0.0.1:10086/eureka
   instance:
-    prefer-ip-address: true # µ±ÆäËü·şÎñ»ñÈ¡µØÖ·Ê±Ìá¹©ip¶ø²»ÊÇhostname
-    ip-address: 127.0.0.1 # Ö¸¶¨×Ô¼ºµÄipĞÅÏ¢£¬²»Ö¸¶¨µÄ»°»á×Ô¼ºÑ°ÕÒ
+    prefer-ip-address: true # å½“å…¶å®ƒæœåŠ¡è·å–åœ°å€æ—¶æä¾›ipè€Œä¸æ˜¯hostname
+    ip-address: 127.0.0.1 # æŒ‡å®šè‡ªå·±çš„ipä¿¡æ¯ï¼Œä¸æŒ‡å®šçš„è¯ä¼šè‡ªå·±å¯»æ‰¾
