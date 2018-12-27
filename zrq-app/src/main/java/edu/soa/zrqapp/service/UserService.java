@@ -18,13 +18,13 @@ public class UserService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public User selectByPrimaryKey(Integer id){
+    public User selectByPrimaryKey(Integer id) {
         //1、 根据user-service获取user-serivce 的集群的信息
         List<ServiceInstance> instances = discoveryClient.getInstances("zrq-service");
         //2、由于我们没有集群，只有一个，所以直接取出第一个
         ServiceInstance instance = instances.get(0);
         //3、拼接URL
-        String url = "http://"+instance.getHost()+":"+instance.getPort()+"/user/"+id;
+        String url = "http://" + instance.getHost() + ":" + instance.getPort() + "/user/" + id;
 
         // 使用restTemplate发起请求
         ResponseEntity<User> entity = restTemplate.getForEntity(url, User.class);
