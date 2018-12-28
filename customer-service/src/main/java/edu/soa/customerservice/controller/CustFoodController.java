@@ -1,5 +1,8 @@
 package edu.soa.customerservice.controller;
 
+import edu.soa.customerservice.entity.PlsCustFood;
+import edu.soa.customerservice.service.PlsCustFoodService;
+import edu.soa.customerservice.util.ResResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**

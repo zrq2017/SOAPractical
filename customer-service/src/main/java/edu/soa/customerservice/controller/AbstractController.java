@@ -1,7 +1,7 @@
 package edu.soa.customerservice.controller;
 
-import com.fs.dishes.base.utils.DateUtils;
-import com.fs.dishes.module.sys.entity.SysUser;
+import edu.soa.customerservice.entity.SysUser;
+import edu.soa.customerservice.util.DateUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public abstract class AbstractController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected SysUser getUser() {
-        return (SysUser) SecurityUtils.getSubject().getPrincipal();
+        return new SysUser();
     }
 
     protected String getUserId() {

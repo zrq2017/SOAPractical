@@ -1,5 +1,8 @@
 package edu.soa.customerservice.controller;
 
+import edu.soa.customerservice.entity.PlsCustomer;
+import edu.soa.customerservice.service.PlsCustomerService;
+import edu.soa.customerservice.util.ResResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -72,11 +75,10 @@ public class CustomerController extends AbstractController {
             @ApiImplicitParam(name = "phone", value = "客户图片地址", dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "level", value = "客户单价", dataType = "String", paramType = "query")
     })
-    @LogManage("保存以及更新客户信息")
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
 //    @RequiresPermissions("customer:save")
     public ResResult save(@RequestBody PlsCustomer customer) {
-        ValidatorUtils.validateEntity(customer, AddGroup.class);
         return plsCustomerService.modifyCustomer(customer);
     }
 
@@ -88,7 +90,7 @@ public class CustomerController extends AbstractController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "customerIds", value = "客户ID集合", paramType = "query"),
     })
-    @LogManage("删除客户信息")
+
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
 //    @RequiresPermissions("customer:delete")
     public ResResult delete(@RequestBody Map<String, Object> params) {

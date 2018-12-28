@@ -1,0 +1,74 @@
+#默认的环境配置
+spring:
+  #定义使用的环境配置文件
+  profiles:
+    active: dev
+  application:
+    name: erems # 应用名称
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+  #定义数据源
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/erems?allowMultiQueries=true
+    username: root
+    password: 123456
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    #该模板默认HTML文件可删除
+    suffix: .html
+  mvc:
+    view:
+      suffix: .html
+
+eureka:
+  client:
+    service-url: # EurekaServer地址
+      defaultZone: http://127.0.0.1:10086/eureka
+  instance:
+    prefer-ip-address: true # 当调用getHostname获取实例的hostname时，返回ip而不是host名称
+    ip-address: 127.0.0.1 # 指定自己的ip信息，不指定的话会自己寻找
+
+#定义应用路径
+server:
+  servlet:
+    context-path: /erems
+
+#自定义属性
+#页面大小
+page:
+  size: 6
+#自定义拦截路径
+interceptor:
+  path:
+    exclude: res/**,index,login
+#图片上传路径
+image:
+  path: E:\Code\Java\erems\src\main\resources\static\img\
+#准考证模板路径
+admission:
+  path: E:\Code\Java\erems\src\main\resources\static\doc\admission.doc
+  per: E:\Code\Java\erems\src\main\resources\static\doc\per\
+---
+#开发环境配置
+spring:
+  profiles: dev
+server:
+    port: 8090
+logging:
+  level:
+    com.zrq.dao: debug
+---
+#测试环境配置
+spring:
+  profiles: test
+server:
+    port: 8088
+
+---
+#生产环境配置
+spring:
+  profiles: prod
+server:
+    port: 8088
