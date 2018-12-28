@@ -1,22 +1,16 @@
 server:
-  port: 8081
+  port: 8082
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/erems?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: 123456
-    driver-class-name: com.mysql.jdbc.Driver
+    customer:
+      url: jdbc:mysql://localhost:3306/soa?useUnicode=true&characterEncoding=utf8
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
   application:
-    name: zrq-service # 应用名称
+    name: user-manage # 应用名称
   main:
     allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
-#    druid:
-#      initial-size: 1
-#      min-idle: 1
-#      max-active: 20
-#      test-on-borrow: true
-#      stat-view-servlet:
-#        allow: true
 eureka:
   client:
     service-url: # EurekaServer地址
