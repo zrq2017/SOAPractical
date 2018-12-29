@@ -17,7 +17,7 @@
         <module>eureka</module>
         <module>zrq-service</module>
         <module>zrq-app</module>
-        <module>user-manage</module>
+        <module>user-service</module>
         <module>exam-service</module>
         <module>erems</module>
     </modules>
