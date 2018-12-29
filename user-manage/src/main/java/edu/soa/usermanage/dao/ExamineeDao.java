@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by zrq on 2018-4-18.
- */
 @Repository
 public interface ExamineeDao{
     /**
@@ -24,7 +21,7 @@ public interface ExamineeDao{
     @Results(id="addressOnly",value = {
             @Result(property="address",
                     column = "address",
-                    one = @One(select = "com.zrq.dao.AddressDao.findById")
+                    one = @One(select = "edu.soa.usermanage.dao.AddressDao.findById")
             )
     })
     public User findByUser(@Param("username") String username, @Param("password") String password);
@@ -42,16 +39,16 @@ public interface ExamineeDao{
      */
     @Select("select * from myexam where user_id=#{userId} and exam_id=#{examId}")
     @Results(id="user_exam",value ={
-         @Result(property="user",
-                 column = "user_id",
-                 one = @One(select = "com.zrq.dao.examinee.ExamineeDao.findById")
-         ),
-        @Result(property="exam",
-                column = "exam_id",
-                one = @One(select = "com.zrq.dao.ExamDao.findById")
-        ),
-         @Result(property="examNum",column = "exam_num"),
-         @Result(property="roomNum",column = "room_num")
+            @Result(property="user",
+                    column = "user_id",
+                    one = @One(select = "edu.soa.usermanage.dao.ExamineeDao.findById")
+            ),
+            @Result(property="exam",
+                    column = "exam_id",
+                    one = @One(select = "edu.soa.usermanage.dao.ExamDao.findById")
+            ),
+            @Result(property="examNum",column = "exam_num"),
+            @Result(property="roomNum",column = "room_num")
     })
     public MyExam findByUserAndExam(@Param("userId") Integer userId, @Param("examId") Integer examId);
 
@@ -65,7 +62,7 @@ public interface ExamineeDao{
     @Results(id="examOnly",value ={
             @Result(property="exam",
                     column = "exam_id",
-                    one = @One(select = "com.zrq.dao.ExamDao.findById")
+                    one = @One(select = "edu.soa.usermanage.dao.ExamDao.findById")
             ),
             @Result(property="examNum",column = "exam_num"),
             @Result(property="roomNum",column = "room_num")
@@ -116,7 +113,7 @@ public interface ExamineeDao{
     @Results(id="userOnly",value ={
             @Result(property="user",
                     column = "user_id",
-                    one = @One(select = "com.zrq.dao.examinee.ExamineeDao.findById")
+                    one = @One(select = "edu.soa.usermanage.dao.ExamineeDao.findById")
             ),
             @Result(property="examNum",column = "exam_num"),
             @Result(property="roomNum",column = "room_num")

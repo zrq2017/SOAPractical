@@ -5,6 +5,7 @@ import edu.soa.usermanage.dao.ExamineeDao;
 import edu.soa.usermanage.entity.Examinee;
 import edu.soa.usermanage.entity.MyExam;
 import edu.soa.usermanage.entity.User;
+import edu.soa.usermanage.util.ResResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,8 +42,14 @@ public class ExamineeService {
      * 返回所有个人考试信息
      * @return
      */
-    public List<MyExam> findMyExam(){
-        return examineeDao.findMyExam();
+    public ResResult findMyExam(){
+        List<MyExam> list=null;
+        try{
+            list=examineeDao.findMyExam();
+        }catch(Exception e){
+            return ResResult.error(300, "返回所有个人考试信息失败！");
+        }
+        return ResResult.ok().withData(list);
     }
 
     /**
@@ -101,7 +108,13 @@ public class ExamineeService {
      * @param examId
      * @return
      */
-    public List<MyExam> findMyExamByExamId(Integer examId){
-        return examineeDao.findMyExamByExamId(examId);
+    public ResResult findMyExamByExamId(Integer examId){
+        List<MyExam> list=null;
+        try{
+            list=examineeDao.findMyExamByExamId(examId);
+        }catch(Exception e){
+            return ResResult.error(300, "根据考试id查询已报名考生信息失败！");
+        }
+        return ResResult.ok().withData(list);
     }
 }

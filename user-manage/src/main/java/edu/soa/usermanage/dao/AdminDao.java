@@ -46,7 +46,7 @@ public interface AdminDao {
     @Results(id="addressOnly",value = {
             @Result(property="address",
                     column = "address_id",
-                    one = @One(select = "com.zrq.dao.admin.AdminDao.findAreaById")
+                    one = @One(select = "edu.soa.usermanage.dao.AdminDao.findAreaById")
             )
     })
     public List<Room> searchByNameAndArea(@Param("name") String name, @Param("areaId") Integer area);
@@ -79,11 +79,10 @@ public interface AdminDao {
 
     /**
      * 删除考点
-     * @param room
      * @return
      */
     @Delete("delete from room where id=#{id}")
-    public int deleteRoom(Room room);
+    public int deleteRoom(Integer id);
 
     /**
      * 根据某项考试（已付款）查找所有考生成绩
@@ -99,15 +98,15 @@ public interface AdminDao {
     @Results(id="user_exam",value = {
             @Result(property="user",
                     column = "user_id",
-                    one = @One(select = "com.zrq.dao.examinee.ExamineeDao.findById")
+                    one = @One(select = "edu.soa.usermanage.dao.ExamineeDao.findById")
             ),
             @Result(property="exam",
                     column = "exam_id",
-                    one = @One(select = "com.zrq.dao.ExamDao.findById")
+                    one = @One(select = "edu.soa.usermanage.dao.ExamDao.findById")
             ),
             @Result(property="address",
                     column = "address",
-                    one = @One(select = "com.zrq.dao.admin.AdminDao.findAreaById")
+                    one = @One(select = "edu.soa.usermanage.dao.AdminDao.findAreaById")
             ),
             @Result(property="examNum",column = "exam_num"),
             @Result(property="roomNum",column = "room_num")

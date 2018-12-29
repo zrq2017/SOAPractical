@@ -1,7 +1,9 @@
 package edu.soa.examservice.service;
 
+import com.github.pagehelper.PageHelper;
 import edu.soa.examservice.dao.ExamDao;
 import edu.soa.examservice.entity.Exam;
+import edu.soa.examservice.entity.ResResult;
 import edu.soa.examservice.entity.Statistics;
 import edu.soa.examservice.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,8 @@ public class ExamService {
      * @return
      */
     public PageBean<Exam> findByPage(int currentPage, int pageSize){
-//        PageHelper.startPage(currentPage,pageSize);
+        PageHelper.startPage(currentPage,pageSize);
         List<Exam> list=examDao.findAll();
-//        for (Exam e:list) {
-//            System.out.println("exam"+e.getId()+e.getName());
-//        }
         Integer totalNum=examDao.count();
         PageBean<Exam> page=new PageBean<Exam>(currentPage,pageSize,totalNum);
         page.setItems(list);
@@ -42,17 +41,29 @@ public class ExamService {
      * @param id
      * @return
      */
-    public Exam findById(Integer id) {
-        return examDao.findById(id);
+    public ResResult findById(Integer id) {
+        Exam exam=null;
+        try{
+            exam=examDao.findById(id);
+        }catch (Exception e){
+            return ResResult.error(300, "根据考试id查找考试信息失败！");
+        }
+        return ResResult.ok().withData(exam);
     }
+
 
     /**
      * 根据id更新考试信息
      * @param exam
      * @return
      */
-    public int updateExam(Exam exam) {
-        return examDao.updateExam(exam);
+    public ResResult updateExam(Exam exam) {
+        try{
+            examDao.updateExam(exam);
+        }catch (Exception e){
+            return ResResult.error(300, "根据id更新考试信息失败！");
+        }
+        return ResResult.ok().withData(exam);
     }
 
     /**
@@ -60,8 +71,13 @@ public class ExamService {
      * @param exam
      * @return
      */
-    public int saveExam(Exam exam) {
-        return examDao.saveExam(exam);
+    public ResResult saveExam(Exam exam) {
+        try{
+            examDao.saveExam(exam);
+        }catch (Exception e){
+            return ResResult.error(300, "新增考试信息失败！");
+        }
+        return ResResult.ok().withData(exam);
     }
 
     /**
@@ -70,16 +86,27 @@ public class ExamService {
      * @param outed
      * @return
      */
-    public int updateExamOuted(Integer id,Integer outed) {
-        return examDao.updateExamOuted(id,outed);
+    public ResResult updateExamOuted(Integer id, Integer outed) {
+        try{
+            examDao.updateExamOuted(id,outed);
+        }catch (Exception e){
+            return ResResult.error(300, "设置考试过期失败！");
+        }
+        return ResResult.ok().withData(Boolean.TRUE);
     }
 
     /**
      * 发现所有过期考试
      * @return
      */
-    public List<Exam> findAllOuted() {
-        return examDao.findAllOuted();
+    public ResResult findAllOuted() {
+        List<Exam> list=null;
+        try{
+            list=examDao.findAllOuted();
+        }catch(Exception e){
+            return ResResult.error(300, "发现所有过期考试失败！");
+        }
+        return ResResult.ok().withData(list);
     }
 
     /**

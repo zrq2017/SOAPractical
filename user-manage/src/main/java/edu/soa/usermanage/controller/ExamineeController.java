@@ -129,7 +129,7 @@ public class ExamineeController{
     @RequestMapping("continuePay")
     public  String pay(HttpServletRequest request, Map<String,Object> map,
                        @RequestParam(name = "id")Integer id){
-        Exam exam=examService.findById(id);
+        Exam exam=(Exam)examService.findById(id).getData();
         request.getSession().setAttribute("currentExam",exam);
         System.out.println("continuePayId:"+id);
         return "paypage";

@@ -42,7 +42,7 @@ public interface ManagerDao {
     @Results(id="addressOnly",value = {
             @Result(property="address",
                     column = "address",
-                    one = @One(select = "com.zrq.dao.admin.AdminDao.findAreaById")
+                    one = @One(select = "edu.soa.usermanage.dao.AdminDao.findAreaById")
             )
     })
     public List<User> searchByNameAndExam(@Param("name") String name, @Param("examId") Integer examId);

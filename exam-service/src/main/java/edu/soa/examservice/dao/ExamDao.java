@@ -55,7 +55,19 @@ public interface ExamDao {
      * @param exam
      * @return
      */
-    @Update("update exam set name=#{name},description=#{description},time=#{time} where id=#{id}")
+    @Update("<script>" +
+            "update exam set " +
+            "<if test='name!=null'>" +
+            "name=#{name}" +
+            "</if>"+
+            "<if test='description!=null'>" +
+            "description=#{description}" +
+            "</if>"+
+            "<if test='time!=null'>" +
+            "time=#{time}" +
+            "</if>"+
+            " where id=#{id}"+
+            "</script>")
     public int updateExam(Exam exam);
 
     /**

@@ -2,11 +2,10 @@ server:
   port: 8082
 spring:
   datasource:
-    customer:
-      url: jdbc:mysql://localhost:3306/soa?useUnicode=true&characterEncoding=utf8
-      username: root
-      password: 123456
-      driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/erems?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
   application:
     name: user-manage # 应用名称
   main:

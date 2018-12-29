@@ -1,24 +1,23 @@
 package edu.soa.examservice.controller;
 
 import edu.soa.examservice.entity.Exam;
+import edu.soa.examservice.entity.ResResult;
 import edu.soa.examservice.entity.Statistics;
 import edu.soa.examservice.service.ExamService;
 import edu.soa.examservice.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by zrq on 2018-4-25.
  */
-@Controller
+@RestController
 @RequestMapping("exam")
 public class ExamController{
     //获取配置文件属性
@@ -29,41 +28,76 @@ public class ExamController{
     private ExamService examService;
 
     @RequestMapping("list")
-    public String list(@RequestParam(name="currentPage",defaultValue ="1")String currentPage,
-                       Map<String,Object> map){
+    public List<Exam> list(@RequestParam(name="page",defaultValue ="1")String currentPage,
+                           @RequestParam(name="size",required = false)Integer size){
+        if(size!=null){
+            pageSize=size;
+        }
         PageBean<Exam> examPage=examService.findByPage(Integer.parseInt(currentPage),pageSize);
-        map.put("examPage",examPage);
-        return "exam-list";
+        return examPage.getItems();
     }
 
+    /**
+     * 返回所有考试信息
+     * @return
+     */
     @RequestMapping("examList")
-    @ResponseBody
     public List<Exam> examList(){
         List<Exam> examList=examService.findAll();
         return examList;
     }
 
+    @RequestMapping("cancelOuted")
+    public ResResult cancelOuted(@RequestParam("id")Integer id){
+        return examService.updateExamOuted(id,0);
+    }
+
+    @RequestMapping("outed")
+    public ResResult outed(@RequestParam(value = "id",required = false)Integer id){
+        if(id!=null){
+            ResResult t=null;
+            if ((t=examService.updateExamOuted(id,1)).getCode()==300) {//不为空设置一个考试过期后返回过期考试列表
+                return t;
+            }
+        }
+        return examService.findAllOuted();
+    }
+
+    /**
+     * 更新、新增考试
+     * @param exam
+     * @return
+     */
+    @PostMapping("saveExam")
+    public ResResult saveExam(Exam exam){
+        ResResult rr=null;
+        if(exam.getId()!=null){//id不空即为更新操作
+            rr=examService.updateExam(exam);
+        }else {
+            rr=examService.saveExam(exam);
+        }
+        return rr;
+    }
+
+    /**
+     * 根据id查询考试
+     * @param id
+     * @return
+     */
+    @RequestMapping("exam")
+    public ResResult exam(@RequestParam("id")Integer id){
+        return examService.findById(id);
+    }
+
+    /**
+     * 返回未过期考试统计信息
+     * @return
+     */
     @RequestMapping("registInfo")
-    @ResponseBody
     public List<Statistics> registInfo(){
         //用exam的描述字段存储报名人数数据
         List<Statistics> statisticsList=examService.findRegisterInfo();
         return statisticsList;
     }
 
-    /**
-     * 跳转到参与报名页面，并保存当前考试信息
-     * @param request
-     * @param id
-     * @param map
-     * @return
-     */
-    @RequestMapping("signup")
-    public String signUp(HttpServletRequest request, @RequestParam("id") Integer id,
-                         Map<String,Object> map){
-        Exam currentExam=examService.findById(id);
-        request.getSession().setAttribute("currentExam",currentExam);
-        map.put("currentExam",currentExam);
-        return "signup";
-    }
 }
