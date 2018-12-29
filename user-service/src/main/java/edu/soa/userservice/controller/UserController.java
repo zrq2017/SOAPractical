@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("user")
 public class UserController {
     @Autowired
     public UserService userService;
@@ -27,8 +28,26 @@ public class UserController {
         return userService.saveUser(user);
     }
 
+    @RequestMapping("updateUser")
+    public ResResult updateUser(User user){
+        return userService.updateUser(user);
+    }
+
+    @RequestMapping("findUserById")
+    public ResResult findUserById(Integer id){
+        return userService.findUserById(id);
+    }
+
+    /**
+     * 根据角色查询用户信息，显示用户列表
+     * @param user
+     * @return
+     */
     @RequestMapping("user")
     public ResResult user(User user){
+        if(user!=null && user.getRole()==null){
+            user.setRole(2);
+        }
         return userService.findUser(user);
     }
 
@@ -38,7 +57,7 @@ public class UserController {
     }
 
     /**
-     * 保存考试
+     * 保存考试成绩
      * @param myExam
      * @return
      */
