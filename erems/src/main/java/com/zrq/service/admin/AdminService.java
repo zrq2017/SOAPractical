@@ -1,24 +1,21 @@
 package com.zrq.service.admin;
 
 import com.zrq.dao.admin.AdminDao;
-import com.zrq.entity.Address;
-import com.zrq.entity.MyExam;
-import com.zrq.entity.Room;
-import com.zrq.entity.User;
+import com.zrq.entity.*;
+import com.zrq.service.BaseService;
+import com.zrq.util.ConvertUtil;
 import com.zrq.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by zrq on 2018-5-12.
  */
 @Service
-public class AdminService {
+public class AdminService extends BaseService {
     @Autowired
     private AdminDao adminDao;
 
@@ -186,7 +183,23 @@ public class AdminService {
      * @return
      */
     public List<User> findUser(User user) {
-        return adminDao.findUser(user);
+        List<User> result=null;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/list?role="+user.getRole();
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            List list=(List)response.getBody().getData();
+            if(list.size()<=0){
+                return null;
+            }
+            result=new ArrayList<User>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),User.class));
+            }
+        }
+        return result;
+//        return adminDao.findUser(user);
     }
 
     /**
@@ -195,7 +208,19 @@ public class AdminService {
      * @return
      */
     public Integer saveUser(User user) {
-        return adminDao.saveUser(user);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/saveUser";
+        if(user.getPassword()==null){
+            user.setPassword(user.getUsername());
+        }
+        url+= ConvertUtil.map2Url(user);
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return adminDao.saveUser(user);
     }
 
     /**
@@ -204,6 +229,14 @@ public class AdminService {
      * @return
      */
     public Integer deleteUser(User user) {
-        return adminDao.deleteUser(user);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/deleteUser?id="+user.getId();
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return adminDao.deleteUser(user);
     }
 }

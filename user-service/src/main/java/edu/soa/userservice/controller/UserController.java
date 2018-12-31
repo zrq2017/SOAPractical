@@ -23,6 +23,11 @@ public class UserController {
         return userService.deleteUser(user);
     }
 
+    /**
+     * 生成新用户
+     * @param user
+     * @return
+     */
     @RequestMapping("saveUser")
     public ResResult saveUser(User user){
         return userService.saveUser(user);

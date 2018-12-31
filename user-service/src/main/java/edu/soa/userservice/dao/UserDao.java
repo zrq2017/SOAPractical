@@ -42,7 +42,7 @@ public interface UserDao {
             "</script>")
     @Results(id="addressOnly",value = {
             @Result(property="address",
-                    column = "address_id",
+                    column = "address",
                     one = @One(select = "edu.soa.userservice.dao.UserDao.findAreaById")
             )
     })
@@ -185,7 +185,12 @@ public interface UserDao {
      * @return
      */
     @Select("select * from user where id=#{id}")
-    @ResultMap("addressOnly")
+    @Results(id="user_address",value = {
+            @Result(property="address",
+                    column = "address",
+                    one = @One(select = "edu.soa.userservice.dao.UserDao.findAreaById")
+            )
+    })
     public User findUserById(@Param("id") Integer id);
 
     /**
