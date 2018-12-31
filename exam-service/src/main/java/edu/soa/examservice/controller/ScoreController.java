@@ -58,6 +58,43 @@ public class ScoreController {
     }
 
     /**
+     * 通过成绩项查个人考试
+     * @param id
+     * @return
+     */
+    @RequestMapping("queryPersonExamByMyExam")
+    public ResResult queryPersonExamByMyExam(@RequestParam("id")Integer id){
+        return scoreService.queryPersonExamByMyExam(id);
+    }
+    /**
+     * 通过成绩项查个人考试
+     * @param eid
+     * @return
+     */
+    @RequestMapping("findScoreByExam")
+    public ResResult findScoreByExam(@RequestParam("eid")Integer eid){
+        return scoreService.findScoreByExam(eid);
+    }
+
+    /**
+     * 通过成绩项score>0个人useID（或考试id）查个人考试
+     * @return
+     */
+    @RequestMapping("findByUserAndExamed")
+    public ResResult findByUserAndExamed(MyExam myExam){
+        return scoreService.findByUserAndExamed(myExam);
+    }
+
+    /**
+     * 通过成绩项score<0个人useID支付状态查个人考试支付状态
+     * @return
+     */
+    @RequestMapping("findByUserAndPay")
+    public ResResult findByUserAndPay(MyExam myExam){
+        return scoreService.findByUserAndPay(myExam);
+    }
+
+    /**
      * 登记成绩
      * @return
      */
@@ -67,7 +104,7 @@ public class ScoreController {
     }
 
     /**
-     * 修改成绩
+     * 修改成绩，可以通过score项id也可以通过user.id与exam.id
      * @return
      */
     @RequestMapping("updateScore")

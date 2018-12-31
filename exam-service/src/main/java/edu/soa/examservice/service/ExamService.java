@@ -92,7 +92,7 @@ public class ExamService {
         }catch (Exception e){
             return ResResult.error(300, "设置考试过期失败！");
         }
-        return ResResult.ok().withData(Boolean.TRUE);
+        return ResResult.ok("设置是否考试过期成功！").withData(Boolean.TRUE);
     }
 
     /**

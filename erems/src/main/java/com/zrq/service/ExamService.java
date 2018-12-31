@@ -1,19 +1,23 @@
 package com.zrq.service;
 
 import com.zrq.dao.ExamDao;
-import com.zrq.entity.Exam;
-import com.zrq.entity.Statistics;
+import com.zrq.entity.*;
+import com.zrq.util.ConvertUtil;
 import com.zrq.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zrq on 2018-4-25.
  */
 @Service
-public class ExamService {
+public class ExamService extends BaseService{
     @Autowired
     private ExamDao examDao;
 
@@ -22,19 +26,40 @@ public class ExamService {
      * @return
      */
     public PageBean<Exam> findByPage(int currentPage, int pageSize){
-//        PageHelper.startPage(currentPage,pageSize);
+        List<Exam> result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/exam/list?page="+currentPage+"&size=pageSize";
+        ResponseEntity<List> response = restTemplate.getForEntity(url,List.class);
+        if(response.getBody().size()>0){
+            List list=(List)response.getBody();
+            result=new ArrayList<Exam>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),Exam.class));
+            }
+        }
         List<Exam> list=examDao.findAll();
-//        for (Exam e:list) {
-//            System.out.println("exam"+e.getId()+e.getName());
-//        }
         Integer totalNum=examDao.count();
         PageBean<Exam> page=new PageBean<Exam>(currentPage,pageSize,totalNum);
-        page.setItems(list);
+        page.setItems(result);
         return page;
     }
 
     public List<Exam> findAll(){
-        return examDao.findAll();
+        List<Exam> result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/exam/examList";
+        ResponseEntity<List> response = restTemplate.getForEntity(url,List.class);
+        if(response.getBody().size()>0){
+            List list=(List)response.getBody();
+            result=new ArrayList<Exam>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),Exam.class));
+            }
+        }
+        return result;
+//        return examDao.findAll();
     }
 
     /**
@@ -43,7 +68,15 @@ public class ExamService {
      * @return
      */
     public Exam findById(Integer id) {
-        return examDao.findById(id);
+        Exam result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/exam/exam?id="+id;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=(Exam)response.getBody().getData();
+        }
+        return result;
+//        return examDao.findById(id);
     }
 
     /**
@@ -52,7 +85,8 @@ public class ExamService {
      * @return
      */
     public int updateExam(Exam exam) {
-        return examDao.updateExam(exam);
+        return saveExam(exam);
+//        return examDao.updateExam(exam);
     }
 
     /**
@@ -61,7 +95,16 @@ public class ExamService {
      * @return
      */
     public int saveExam(Exam exam) {
-        return examDao.saveExam(exam);
+        Integer result=0;
+        String url=this.getBaseUrl("exam-service");
+        url+="/exam/saveExam";
+        url+= ConvertUtil.map2Url(exam);
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return examDao.saveExam(exam);
     }
 
     /**
@@ -71,7 +114,15 @@ public class ExamService {
      * @return
      */
     public int updateExamOuted(Integer id,Integer outed) {
-        return examDao.updateExamOuted(id,outed);
+        Integer result=0;
+        String url=this.getBaseUrl("exam-service");
+        url+="/exam/out?id="+id+"&out="+outed;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return examDao.updateExamOuted(id,outed);
     }
 
     /**
@@ -79,7 +130,23 @@ public class ExamService {
      * @return
      */
     public List<Exam> findAllOuted() {
-        return examDao.findAllOuted();
+        List<Exam> result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/exam/findAllOuted";
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            List list=(List)response.getBody().getData();
+            if(list.size()<=0){
+                return null;
+            }
+            result=new ArrayList<Exam>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),Exam.class));
+            }
+        }
+        return result;
+//        return examDao.findAllOuted();
     }
 
     /**

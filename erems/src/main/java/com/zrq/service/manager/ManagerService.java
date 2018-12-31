@@ -1,8 +1,12 @@
 package com.zrq.service.manager;
 
 import com.zrq.dao.manager.ManagerDao;
+import com.zrq.entity.ResResult;
 import com.zrq.entity.User;
+import com.zrq.service.BaseService;
+import com.zrq.util.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,12 +15,24 @@ import java.util.List;
  * Created by zrq on 2018-5-6.
  */
 @Service
-public class ManagerService {
+public class ManagerService extends BaseService{
     @Autowired
     private ManagerDao managerDao;
 
     public int addExaminee(User user) {
-        return managerDao.insertExaminee(user);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/saveUser";
+        if(user.getPassword()==null){
+            user.setPassword(user.getUsername());
+        }
+        url+= ConvertUtil.map2Url(user);
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return managerDao.insertExaminee(user);
     }
 
     /**
@@ -44,7 +60,15 @@ public class ManagerService {
      * @return
      */
     public int addExamineeExam(Integer userId, Integer examId) {
-        return managerDao.insertExam(userId,examId);
+        Integer result=0;
+        String url=this.getBaseUrl("exam-service");
+        url+="/score/signExam?user.id="+userId+"&exam.id="+examId;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return managerDao.insertExam(userId,examId);
     }
 
     /**
@@ -52,7 +76,16 @@ public class ManagerService {
      * @param user
      */
     public int updateUser(User user) {
-        return managerDao.updateUser(user);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/updateUser";
+        url+= ConvertUtil.map2Url(user);
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return managerDao.updateUser(user);
     }
 
     /**
@@ -61,6 +94,14 @@ public class ManagerService {
      * @return
      */
     public User findUserById(Integer id){
-        return managerDao.findUserById(id);
+        User result=null;
+        String url=this.getBaseUrl("user-service");
+        url+="/score/findUserById?id="+id;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=(User)response.getBody().getData();
+        }
+        return result;
+//        return managerDao.findUserById(id);
     }
 }

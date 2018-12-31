@@ -1,10 +1,7 @@
 package edu.soa.userservice.service;
 
 import edu.soa.userservice.dao.UserDao;
-import edu.soa.userservice.entity.MyExam;
-import edu.soa.userservice.entity.ResResult;
-import edu.soa.userservice.entity.Room;
-import edu.soa.userservice.entity.User;
+import edu.soa.userservice.entity.*;
 import edu.soa.userservice.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -307,5 +304,19 @@ public class UserService {
             return ResResult.error(300, "用户不存在！");
         }
         return ResResult.ok("成功").withData(user);
+    }
+
+    /**
+     * 查询所有地区
+     * @return
+     */
+    public ResResult findArea() {
+        List<Address> list=null;
+        try {
+            list=userDao.findArea();
+        }catch(Exception e){
+            return ResResult.error(300, "查询所有地区失败！");
+        }
+        return ResResult.ok("成功").withData(list);
     }
 }

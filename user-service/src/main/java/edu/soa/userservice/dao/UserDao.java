@@ -76,7 +76,7 @@ public interface UserDao {
             "<if test='detail!=null'>" +
             "detail=#{detail}" +
             "</if>"+
-            "<if test='detail!=null'>" +
+            "<if test='address.id!=null'>" +
             "address_id=#{address.id}" +
             "</if>"+
             " where id=#{id}"+

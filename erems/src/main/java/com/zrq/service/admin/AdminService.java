@@ -24,7 +24,23 @@ public class AdminService extends BaseService {
      * @return
      */
     public List<Address> findArea() {
-        return adminDao.findArea();
+        List<Address> result=null;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/area";
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            List list=(List)response.getBody().getData();
+            if(list.size()<=0){
+                return null;
+            }
+            result=new ArrayList<Address>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),Address.class));
+            }
+        }
+        return result;
+//        return adminDao.findArea();
     }
 
     /**
@@ -34,7 +50,23 @@ public class AdminService extends BaseService {
      * @return
      */
     public List<Room> searchByNameAndArea(String name, Integer area) {
-        return adminDao.searchByNameAndArea(name,area);
+        List<Room> result=null;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/search?sname="+name+"&sarea="+area;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            List list=(List)response.getBody().getData();
+            if(list.size()<=0){
+                return null;
+            }
+            result=new ArrayList<Room>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),Room.class));
+            }
+        }
+        return result;
+//        return adminDao.searchByNameAndArea(name,area);
     }
 
     /**
@@ -43,7 +75,15 @@ public class AdminService extends BaseService {
      * @return
      */
     public Room findRoomById(Integer id) {
-        return adminDao.findRoomById(id);
+        Room result=null;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/room?id="+id;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=(Room)response.getBody().getData();
+        }
+        return result;
+//        return adminDao.findRoomById(id);
     }
 
     /**
@@ -52,7 +92,17 @@ public class AdminService extends BaseService {
      * @return
      */
     public int updateRoom(Room room) {
-        return adminDao.updateRoom(room);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/saveRoom";
+        url+=ConvertUtil.map2Url(room);
+        url+="&address.id="+room.getAddress().getId();
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return adminDao.updateRoom(room);
     }
 
     /**
@@ -61,7 +111,17 @@ public class AdminService extends BaseService {
      * @return
      */
     public int saveRoom(Room room) {
-        return adminDao.saveRoom(room);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/saveRoom";
+        url+=ConvertUtil.map2Url(room);
+        url+="&address.id="+room.getAddress().getId();
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return adminDao.saveRoom(room);
     }
 
     /**
@@ -70,7 +130,15 @@ public class AdminService extends BaseService {
      * @return
      */
     public int deleteRoom(Room room) {
-        return adminDao.deleteRoom(room);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/deleteRoom?id="+room.getId();
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return adminDao.deleteRoom(room);
     }
 
     /**
@@ -79,7 +147,23 @@ public class AdminService extends BaseService {
      * @return
      */
     public List<MyExam> findScoreByExam(Integer sexam) {
-        return adminDao.findScoreByExam(sexam);
+        List<MyExam> result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/score/findScoreByExam?eid="+sexam;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            List list=(List)response.getBody().getData();
+            if(list.size()<=0){
+                return null;
+            }
+            result=new ArrayList<MyExam>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),MyExam.class));
+            }
+        }
+        return result;
+//        return adminDao.findScoreByExam(sexam);
     }
 
     /**
@@ -88,7 +172,15 @@ public class AdminService extends BaseService {
      * @return
      */
     public MyExam findScoreById(Integer id) {
-        return adminDao.findScoreById(id);
+        MyExam result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/score/queryPersonExamByMyExam?id="+id;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=(MyExam)response.getBody().getData();
+        }
+        return result;
+//        return adminDao.findScoreById(id);
     }
 
     /**
@@ -97,7 +189,15 @@ public class AdminService extends BaseService {
      * @return
      */
     public int updateScore(MyExam myExam) {
-        return adminDao.updateScore(myExam);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/score/updateScore?id="+myExam.getId()+"&score="+myExam.getScore();
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return adminDao.updateScore(myExam);
     }
 
     /**

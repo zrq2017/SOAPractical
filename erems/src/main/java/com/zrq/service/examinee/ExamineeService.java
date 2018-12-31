@@ -3,18 +3,25 @@ package com.zrq.service.examinee;
 import com.zrq.dao.ExamDao;
 import com.zrq.dao.examinee.ExamineeDao;
 import com.zrq.entity.MyExam;
+import com.zrq.entity.ResResult;
 import com.zrq.entity.User;
 import com.zrq.entity.examinee.Examinee;
+import com.zrq.service.BaseService;
+import com.zrq.util.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zrq on 2018-4-18.
  */
 @Service
-public class ExamineeService {
+public class ExamineeService extends BaseService{
     @Autowired
     private ExamineeDao examineeDao;
     @Autowired
@@ -25,7 +32,15 @@ public class ExamineeService {
     }
 
     public User findUserById(Integer id) {
-        return examineeDao.findById(id);
+        User result=null;
+        String url=this.getBaseUrl("user-service");
+        url+="/score/findUserById?id="+id;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=(User)response.getBody().getData();
+        }
+        return result;
+//        return examineeDao.findById(id);
     }
     /**
      * 插入一条考生报名考试信息
@@ -34,7 +49,15 @@ public class ExamineeService {
      * @return
      */
     public int insertExam(Integer userId, Integer examId){
-        return examDao.insertExam(userId,examId);
+        Integer result=0;
+        String url=this.getBaseUrl("exam-service");
+        url+="/score/signExam?user.id="+userId+"&exam.id="+examId;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//        return examDao.insertExam(userId,examId);
     };
 
     /**
@@ -52,12 +75,22 @@ public class ExamineeService {
      * @return
      */
     public MyExam payByUserAndExam(Integer userId, Integer examId) {
-        MyExam myExam=examineeDao.findByUserAndExam(userId, examId);
-        examineeDao.updateMyExamPay(myExam);
-        //由上一步更新代表已成功修改支付状态
-        // 但是由于先查询了原先未修改状态时的数据，故自我更新
-        myExam.setPay(1);
-        return myExam;
+        MyExam result=null;
+        String url=this.getBaseUrl("exam-service");
+        String url1=url+"/score/payExam?user.id="+userId+"&exam.id="+examId+"&pay=1";
+        ResponseEntity<ResResult> response1 = restTemplate.getForEntity(url1,ResResult.class);
+        if(response1.getBody().getCode()==200){
+            String url2=url+"/score/queryScore?user.id="+userId+"&exam.id="+examId;
+            ResponseEntity<ResResult> response2 = restTemplate.getForEntity(url1,ResResult.class);
+            result=(MyExam)response2.getBody().getData();
+        }
+        return result;
+//        MyExam myExam=examineeDao.findByUserAndExam(userId, examId);
+//        examineeDao.updateMyExamPay(myExam);
+//        //由上一步更新代表已成功修改支付状态
+//        // 但是由于先查询了原先未修改状态时的数据，故自我更新
+//        myExam.setPay(1);
+//        return myExam;
     }
 
     /**
@@ -66,7 +99,23 @@ public class ExamineeService {
      * @return
      */
     public List<MyExam> findByUserAndExamed(Integer userId) {
-        return examineeDao.findByUserAndExamed(userId);
+        List<MyExam> result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/score/findByUserAndExamed?user.id="+userId;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            List list=(List)response.getBody().getData();
+            if(list.size()<=0){
+                return null;
+            }
+            result=new ArrayList<MyExam>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),MyExam.class));
+            }
+        }
+        return result;
+//        return examineeDao.findByUserAndExamed(userId);
     }
 
     /**
@@ -76,7 +125,23 @@ public class ExamineeService {
      * @return
      */
     public List<MyExam> findOneByUserAndExamed(Integer userId, Integer examId) {
-        return examineeDao.findOneByUserAndExamed(userId,examId);
+        List<MyExam> result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/score/findByUserAndExamed?user.id="+userId+"&exam.id="+examId;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            List list=(List)response.getBody().getData();
+            if(list.size()<=0){
+                return null;
+            }
+            result=new ArrayList<MyExam>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),MyExam.class));
+            }
+        }
+        return result;
+//        return examineeDao.findOneByUserAndExamed(userId,examId);
     }
     /**
      * 根据考生及支付状态查询
@@ -85,7 +150,23 @@ public class ExamineeService {
      * @return
      */
     public List<MyExam> findByUserAndPay(Integer userId, Integer pay) {
-        return examineeDao.findByUserAndPay(userId,pay);
+        List<MyExam> result=null;
+        String url=this.getBaseUrl("exam-service");
+        url+="/score/findByUserAndExamed?user.id="+userId+"&pay="+pay;
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            List list=(List)response.getBody().getData();
+            if(list.size()<=0){
+                return null;
+            }
+            result=new ArrayList<MyExam>();
+            Iterator it = list.iterator();
+            while(it.hasNext()) {
+                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),MyExam.class));
+            }
+        }
+        return  result;
+//        return examineeDao.findByUserAndPay(userId,pay);
     }
 
     /**
@@ -93,7 +174,16 @@ public class ExamineeService {
      * @param user
      */
     public int updateUser(User user) {
-       return examineeDao.updateUser(user);
+        Integer result=0;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/updateUser";
+        url+=ConvertUtil.map2Url(user);
+        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+        if(response.getBody().getCode()==200){
+            result=1;
+        }
+        return result;
+//       return examineeDao.updateUser(user);
     }
 
     /**

@@ -128,13 +128,22 @@ public class UserController {
     }
 
     /**
-     * 更新考点页面跳转
+     * 查询考点
      * @param id
      * @return
      */
     @RequestMapping("room")
     public ResResult room(@RequestParam("id")Integer id){
         return userService.findRoomById(id);
+    }
+
+    /**
+     * 查询地区
+     * @return
+     */
+    @RequestMapping("area")
+    public ResResult area(){
+        return userService.findArea();
     }
 
 

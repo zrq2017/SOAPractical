@@ -38,7 +38,7 @@ public class ExamController{
     }
 
     /**
-     * 返回所有考试信息
+     * 返回所有考试信息，findALL均为未过期的
      * @return
      */
     @RequestMapping("examList")
@@ -47,20 +47,24 @@ public class ExamController{
         return examList;
     }
 
-    @RequestMapping("cancelOuted")
-    public ResResult cancelOuted(@RequestParam("id")Integer id){
-        return examService.updateExamOuted(id,0);
+    /**
+     * 发现过期考试列表
+     * @return
+     */
+    @RequestMapping("findAllOuted")
+    public ResResult findAllOuted(){
+        return examService.findAllOuted();
     }
 
-    @RequestMapping("outed")
-    public ResResult outed(@RequestParam(value = "id",required = false)Integer id){
-        if(id!=null){
-            ResResult t=null;
-            if ((t=examService.updateExamOuted(id,1)).getCode()==300) {//不为空设置一个考试过期后返回过期考试列表
-                return t;
-            }
-        }
-        return examService.findAllOuted();
+    /**
+     * 设置考试是否过期
+     * @param id
+     * @param out
+     * @return
+     */
+    @RequestMapping("out")
+    public ResResult out(@RequestParam(value = "id",required = false)Integer id,@RequestParam("out")Integer out){
+        return examService.updateExamOuted(id,out);
     }
 
     /**

@@ -112,7 +112,11 @@ public class ScoreService {
      */
     public ResResult updateScore(MyExam myExam) {
         try{
-            scoreDao.updateScore(myExam);
+            if(myExam.getId()!=null){
+                scoreDao.updateScoreByMyExam(myExam);
+            }else {
+                scoreDao.updateScore(myExam);
+            }
         }catch (Exception e){
             return ResResult.error(300, "修改成绩失败！");
         }
@@ -131,5 +135,45 @@ public class ScoreService {
             return ResResult.error(300, "查询单项成绩失败！");
         }
         return ResResult.ok().withData(myExam);
+    }
+
+    public ResResult queryPersonExamByMyExam(Integer id) {
+        MyExam myExam=null;
+        try{
+            myExam=scoreDao.queryPersonExamByMyExam(id);
+        }catch (Exception e){
+            return ResResult.error(300, "根据score项id查询个人考试失败！");
+        }
+        return ResResult.ok().withData(myExam);
+    }
+
+    public ResResult findScoreByExam(Integer eid) {
+        List<MyExam> myExam=null;
+        try{
+            myExam=scoreDao.findScoreByExam(eid);
+        }catch (Exception e){
+            return ResResult.error(300, "根据score项考试id查询考试成绩失败！");
+        }
+        return ResResult.ok().withData(myExam);
+    }
+
+    public ResResult findByUserAndExamed(MyExam myExam) {
+        List<MyExam> list=null;
+        try{
+            list=scoreDao.findByUserAndExamed(myExam);
+        }catch (Exception e){
+            return ResResult.error(300, "根据score>0项考试id查询考试成绩失败！");
+        }
+        return ResResult.ok().withData(list);
+    }
+
+    public ResResult findByUserAndPay(MyExam myExam) {
+        List<MyExam> list=null;
+        try{
+            list=scoreDao.findByUserAndPay(myExam);
+        }catch (Exception e){
+            return ResResult.error(300, "根据支付状态判断是否支付：0未支付，1支付失败！");
+        }
+        return ResResult.ok().withData(list);
     }
 }
