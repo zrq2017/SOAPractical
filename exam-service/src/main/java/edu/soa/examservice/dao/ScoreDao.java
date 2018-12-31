@@ -4,6 +4,8 @@ import edu.soa.examservice.entity.MyExam;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by zrq on 2018-12-29.
  */
@@ -13,8 +15,11 @@ public interface ScoreDao {
     @Insert("insert myexam(user_id,exam_id,pay) values(#{userId},#{examId},0)")
     public int  signExam(@Param("userId") Integer userId, @Param("examId") Integer examId);
 
-    @Update("update myexam set pay=1 where id=#{id}")
-    public int  payExam(@Param("id")Integer eid);
+    @Delete("delete from myexam where user_id=#{userId} and exam_id=#{examId}")
+    public int  removeExam(@Param("userId") Integer uid, @Param("examId") Integer eid);
+
+    @Update("update myexam set pay=#{pay} where user_id=#{userId} and exam_id=#{examId}")
+    public int  payExam(@Param("userId") Integer uid, @Param("examId") Integer eid,@Param("pay") Integer pay);
 
 
     @Select("select * from myexam where user_id=#{userId}")
@@ -26,14 +31,12 @@ public interface ScoreDao {
             @Result(property="examNum",column = "exam_num"),
             @Result(property="roomNum",column = "room_num")
     })
-    public MyExam queryPersonExam(Integer uid);
+    public List<MyExam> queryPersonExam(Integer uid);
 
     @Update("update myexam set score=#{score} where user_id=#{user.id} and exam_id=#{exam.id}")
-    public MyExam signScore(MyExam myExam);
-
-    @Update("update myexam set score=#{score} where user_id=#{user.id} and exam_id=#{exam.id}")
-    public int updatScore(MyExam myExam);
+    public int updateScore(MyExam myExam);
 
     @Select("select * from myexam where user_id=#{user.id} and exam_id=#{exam.id}")
+    @ResultMap("examOnly")
     public MyExam queryScore(MyExam myExam);
 }

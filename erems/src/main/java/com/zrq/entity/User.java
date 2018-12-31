@@ -1,9 +1,13 @@
 package com.zrq.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by zrq on 2018-4-18.
  */
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private String name;
     private String username;

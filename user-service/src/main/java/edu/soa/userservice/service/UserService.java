@@ -294,4 +294,18 @@ public class UserService {
         }
         return ResResult.ok().withData(user);
     }
+
+    /**
+     * 根据用户名密码查询用户
+     * @param user
+     * @return
+     */
+    public ResResult findUserByUsernameAndPassword(User user) {
+        try {
+            user=userDao.findUserByUsernameAndPassword(user);
+        }catch(Exception e){
+            return ResResult.error(300, "用户不存在！");
+        }
+        return ResResult.ok("成功").withData(user);
+    }
 }

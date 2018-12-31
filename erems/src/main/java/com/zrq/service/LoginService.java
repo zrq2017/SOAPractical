@@ -1,20 +1,27 @@
 package com.zrq.service;
 
 import com.zrq.dao.examinee.ExamineeDao;
+import com.zrq.entity.ResResult;
 import com.zrq.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by zrq on 2018-4-23.
  */
 @Service
-public class LoginService {
+public class LoginService extends BaseService{
     @Autowired
     private ExamineeDao examineeDao;
 
     public User findUser(User user) {
-        return examineeDao.findByUser(user.getUsername(),user.getPassword());
+        User result=null;
+        String url=this.getBaseUrl("user-service");
+        url+="/user/findUserByUsernameAndPassword";
+        ResponseEntity<ResResult> response = this.restTemplate.postForEntity(url, user, ResResult.class);
+        result=(User)response.getBody().getData();
+        return result;
     }
 
     public Integer registUser(User user) {

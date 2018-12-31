@@ -38,12 +38,17 @@ public class UserController {
         return userService.findUserById(id);
     }
 
+    @RequestMapping("findUserByUsernameAndPassword")
+    public ResResult findUserByUsernameAndPassword(User user){
+        return userService.findUserByUsernameAndPassword(user);
+    }
+
     /**
      * 根据角色查询用户信息，显示用户列表
      * @param user
      * @return
      */
-    @RequestMapping("user")
+    @RequestMapping("list")
     public ResResult user(User user){
         if(user!=null && user.getRole()==null){
             user.setRole(2);

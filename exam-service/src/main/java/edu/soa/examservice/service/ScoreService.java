@@ -6,6 +6,8 @@ import edu.soa.examservice.entity.ResResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by zrq on 2018-12-29.
  */
@@ -29,14 +31,31 @@ public class ScoreService {
         return ResResult.ok().withData(Boolean.TRUE);
     }
 
+
     /**
-     * 支付考试
+     * 删除个人考试
+     * @param uid
      * @param eid
      * @return
      */
-    public ResResult payExam(Integer eid) {
+    public ResResult removeExam(Integer uid, Integer eid) {
         try{
-            scoreDao.payExam(eid);
+            scoreDao.removeExam(uid,eid);
+        }catch (Exception e){
+            return ResResult.error(300, "报名考试失败！");
+        }
+        return ResResult.ok().withData(Boolean.TRUE);
+    }
+
+    /**
+     * 支付考试
+     * @param myExam
+     * @return
+     */
+    public ResResult payExamPay(MyExam myExam) {
+        try{
+            myExam.setPay(1);
+            this.payExam(myExam);
         }catch (Exception e){
             return ResResult.error(300, "支付考试失败！");
         }
@@ -44,12 +63,26 @@ public class ScoreService {
     }
 
     /**
+     *
+     * 设置考试支付状态
+     * @param myExam
+     * @return
+     */
+    public ResResult payExam(MyExam myExam) {
+        try{
+            scoreDao.payExam(myExam.getUser().getId(),myExam.getExam().getId(),myExam.getPay());
+        }catch (Exception e){
+            return ResResult.error(300, "支付考试失败！");
+        }
+        return ResResult.ok().withData(Boolean.TRUE);
+    }
+    /**
      * 查询个人考试
      * @param uid
      * @return
      */
     public ResResult queryPersonExam(Integer uid) {
-        MyExam myExam=null;
+        List<MyExam> myExam=null;
         try{
             myExam=scoreDao.queryPersonExam(uid);
         }catch (Exception e){
@@ -65,7 +98,7 @@ public class ScoreService {
      */
     public ResResult signScore(MyExam myExam) {
         try{
-            myExam=scoreDao.signScore(myExam);
+            scoreDao.updateScore(myExam);
         }catch (Exception e){
             return ResResult.error(300, "登记成绩失败！");
         }
@@ -77,9 +110,9 @@ public class ScoreService {
      * @param myExam
      * @return
      */
-    public ResResult updatScore(MyExam myExam) {
+    public ResResult updateScore(MyExam myExam) {
         try{
-            scoreDao.updatScore(myExam);
+            scoreDao.updateScore(myExam);
         }catch (Exception e){
             return ResResult.error(300, "修改成绩失败！");
         }

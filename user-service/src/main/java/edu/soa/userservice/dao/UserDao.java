@@ -205,6 +205,7 @@ public interface UserDao {
             "</if>"+
             "<if test='phone!=null'>" +
             "phone=#{phone}" +
+            "</if>"+
             "<if test='idnumber!=null'>" +
             "idnumber=#{idnumber}" +
             "</if>"+
@@ -217,4 +218,7 @@ public interface UserDao {
             " where id=#{id}" +
             "</script>")
     public int updateUser(User user);
+
+    @Select("select * from user where username=#{username} and password=#{password}")
+    public User findUserByUsernameAndPassword(User user);
 }

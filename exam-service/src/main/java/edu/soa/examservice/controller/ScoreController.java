@@ -1,9 +1,7 @@
 package edu.soa.examservice.controller;
 
-import edu.soa.examservice.entity.Exam;
 import edu.soa.examservice.entity.MyExam;
 import edu.soa.examservice.entity.ResResult;
-import edu.soa.examservice.entity.User;
 import edu.soa.examservice.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("score")
+/**
+ * 必传user.id与exam.id
+ */
 public class ScoreController {
     @Autowired
     public ScoreService scoreService;
@@ -24,8 +25,17 @@ public class ScoreController {
      * @return
      */
     @RequestMapping("signExam")
-    public ResResult signExam(User user, Exam exam){
-        return scoreService.signExam(user.getId(),exam.getId());
+    public ResResult signExam(MyExam myExam){
+        return scoreService.signExam(myExam.getUser().getId(),myExam.getExam().getId());
+    }
+
+    /**
+     * 删除个人考试
+     * @return
+     */
+    @RequestMapping("removeExam")
+    public ResResult removeExam(MyExam myExam){
+        return scoreService.removeExam(myExam.getUser().getId(),myExam.getExam().getId());
     }
 
     /**
@@ -33,8 +43,8 @@ public class ScoreController {
      * @return
      */
     @RequestMapping("payExam")
-    public ResResult payExam(Exam exam){
-        return scoreService.payExam(exam.getId());
+    public ResResult payExam(MyExam myExam){
+        return scoreService.payExam(myExam);
     }
 
     /**
@@ -60,9 +70,9 @@ public class ScoreController {
      * 修改成绩
      * @return
      */
-    @RequestMapping("updatScore")
-    public ResResult updatScore(MyExam myExam){
-        return scoreService.updatScore(myExam);
+    @RequestMapping("updateScore")
+    public ResResult updateScore(MyExam myExam){
+        return scoreService.updateScore(myExam);
     }
 
     /**
