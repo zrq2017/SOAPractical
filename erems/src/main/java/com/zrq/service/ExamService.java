@@ -1,7 +1,9 @@
 package com.zrq.service;
 
 import com.zrq.dao.ExamDao;
-import com.zrq.entity.*;
+import com.zrq.entity.Exam;
+import com.zrq.entity.ResResult;
+import com.zrq.entity.Statistics;
 import com.zrq.util.ConvertUtil;
 import com.zrq.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +75,7 @@ public class ExamService extends BaseService{
         url+="/exam/exam?id="+id;
         ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
         if(response.getBody().getCode()==200){
-            result=(Exam)response.getBody().getData();
+            result=(Exam)ConvertUtil.parseMap2Object((Map<String, Object>) response.getBody().getData(),Exam.class);
         }
         return result;
 //        return examDao.findById(id);
@@ -98,7 +100,7 @@ public class ExamService extends BaseService{
         Integer result=0;
         String url=this.getBaseUrl("exam-service");
         url+="/exam/saveExam";
-        url+= ConvertUtil.map2Url(exam);
+        url+= ConvertUtil.map2UrlContainTime(exam);
         ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
         if(response.getBody().getCode()==200){
             result=1;

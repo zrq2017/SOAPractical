@@ -63,22 +63,24 @@ public interface UserDao {
      * @return
      */
     @Update("<script>" +
-            "update room set " +
+            "update room " +
+            "<set>" +
             "<if test='num!=null'>" +
-            "num=#{num}" +
+            "num=#{num}," +
             "</if>"+
             "<if test='name!=null'>" +
-            "name=#{name}" +
+            "name=#{name}," +
             "</if>"+
             "<if test='size!=null'>" +
-            "size=#{size}" +
+            "size=#{size}," +
             "</if>"+
             "<if test='detail!=null'>" +
-            "detail=#{detail}" +
+            "detail=#{detail}," +
             "</if>"+
             "<if test='address.id!=null'>" +
-            "address_id=#{address.id}" +
-            "</if>"+
+            "address_id=#{address.id}," +
+            "</if>" +
+            "</set>"+
             " where id=#{id}"+
             "</script>")
     public int updateRoom(Room room);
@@ -198,28 +200,30 @@ public interface UserDao {
      * @param user
      */
     @Update("<script>"+
-            "update user set " +
+            "update user " +
+            "<set>" +
             "<if test='name!=null'>" +
-            "name=#{name}" +
+            "name=#{name}," +
             "</if>"+
             "<if test='sex!=null'>" +
-            "sex=#{sex}" +
+            "sex=#{sex}," +
             "</if>"+
             "<if test='email!=null'>" +
-            "email=#{email}" +
+            "email=#{email}," +
             "</if>"+
             "<if test='phone!=null'>" +
-            "phone=#{phone}" +
+            "phone=#{phone}," +
             "</if>"+
             "<if test='idnumber!=null'>" +
-            "idnumber=#{idnumber}" +
+            "idnumber=#{idnumber}," +
             "</if>"+
             "<if test='eduback!=null'>" +
-            "eduback=#{eduback}" +
+            "eduback=#{eduback}," +
             "</if>"+
             "<if test='address!=null'>" +
-            "address=#{address.id}" +
-            "</if>"+
+            "address=#{address.id}," +
+            "</if>" +
+            "</set>"+
             " where id=#{id}" +
             "</script>")
     public int updateUser(User user);

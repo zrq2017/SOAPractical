@@ -56,16 +56,18 @@ public interface ExamDao {
      * @return
      */
     @Update("<script>" +
-            "update exam set " +
+            "update exam " +
+            "<set>" +
             "<if test='name!=null'>" +
-            "name=#{name}" +
+            " name=#{name}, " +
             "</if>"+
             "<if test='description!=null'>" +
-            "description=#{description}" +
+            " description=#{description}," +
             "</if>"+
             "<if test='time!=null'>" +
-            "time=#{time}" +
-            "</if>"+
+            " time=#{time}," +
+            "</if>" +
+            "</set>"+
             " where id=#{id}"+
             "</script>")
     public int updateExam(Exam exam);

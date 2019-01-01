@@ -34,10 +34,10 @@ public class ExamineeService extends BaseService{
     public User findUserById(Integer id) {
         User result=null;
         String url=this.getBaseUrl("user-service");
-        url+="/score/findUserById?id="+id;
+        url+="/user/findUserById?id="+id;
         ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
         if(response.getBody().getCode()==200){
-            result=(User)response.getBody().getData();
+            result=ConvertUtil.parseMap2Object((Map<String, Object>) response.getBody().getData(),User.class);
         }
         return result;
 //        return examineeDao.findById(id);
@@ -82,7 +82,7 @@ public class ExamineeService extends BaseService{
         if(response1.getBody().getCode()==200){
             String url2=url+"/score/queryScore?user.id="+userId+"&exam.id="+examId;
             ResponseEntity<ResResult> response2 = restTemplate.getForEntity(url1,ResResult.class);
-            result=(MyExam)response2.getBody().getData();
+            result=ConvertUtil.parseMap2Object((Map<String, Object>)response2.getBody().getData(),MyExam.class);
         }
         return result;
 //        MyExam myExam=examineeDao.findByUserAndExam(userId, examId);

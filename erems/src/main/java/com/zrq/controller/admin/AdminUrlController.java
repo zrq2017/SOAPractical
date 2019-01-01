@@ -217,9 +217,10 @@ public class AdminUrlController {
                                @RequestParam(value = "tag",required = false)Integer tag,
                                Map<String,Object> map){
         List<MyExam> examineeList=null;
-        Exam currentExam=examService.findById(id);
+        Exam currentExam=null;
         if(id!=null&&!id.equals("")){
            examineeList=examineeService.findMyExamByExamId(id);
+            currentExam=examService.findById(id);
         }else {
             examineeList=examineeService.findMyExam();
         }

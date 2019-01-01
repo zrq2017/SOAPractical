@@ -49,14 +49,7 @@ public interface ScoreDao {
     public MyExam queryScore(MyExam myExam);
 
     @Select("select * from myexam where id=#{id}")
-    @Results(id="examOnly",value ={
-            @Result(property="exam",
-                    column = "exam_id",
-                    one = @One(select = "edu.soa.examservice.dao.ExamDao.findById")
-            ),
-            @Result(property="examNum",column = "exam_num"),
-            @Result(property="roomNum",column = "room_num")
-    })
+    @ResultMap("examOnly")
     MyExam queryPersonExamByMyExam(Integer id);
 
 
@@ -83,14 +76,13 @@ public interface ScoreDao {
      * @return
      */
     @Select("<script>" +
-            "select * from myexam <where> score>=0" +
-            "<if test='user.id!=null or user.id != \"\"'>" +
+            "select * from myexam where score>=0" +
+            "<if test='${user.id}!=null or ${user.id} != \"\"'>" +
             "and user_id=#{user.id}" +
             "</if>" +
-            "<if test='exam.id!=null or exam.id != \"\"'>" +
+            "<if test='${exam.id}!=null or ${exam.id} != \"\"'>" +
             "and exam_id=#{exam.id}" +
             "</if>" +
-            "</where>"+
             "</script>")
     @ResultMap("examOnly")
     public List<MyExam> findByUserAndExamed(MyExam myExam);
@@ -102,16 +94,7 @@ public interface ScoreDao {
      * @param score<0
      * @return
      */
-    @Select("<script>" +
-            "select * from myexam <where> score<0" +
-            "<if test='pay!=null or pay != \"\"'>" +
-            "and pay=#{pay}" +
-            "</if>" +
-            "<if test='user.id!=null or user.id != \"\"'>" +
-            "and user_id=#{user.id}" +
-            "</if>" +
-            "</where>"+
-            "</script>")
+    @Select("select * from myexam where score<0 and pay=#{pay} and user_id=#{user.id}")
     @ResultMap("examOnly")
     public List<MyExam> findByUserAndPay(MyExam myExam);
 

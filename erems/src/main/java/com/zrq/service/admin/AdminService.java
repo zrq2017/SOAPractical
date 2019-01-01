@@ -147,23 +147,27 @@ public class AdminService extends BaseService {
      * @return
      */
     public List<MyExam> findScoreByExam(Integer sexam) {
-        List<MyExam> result=null;
-        String url=this.getBaseUrl("exam-service");
-        url+="/score/findScoreByExam?eid="+sexam;
-        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
-        if(response.getBody().getCode()==200){
-            List list=(List)response.getBody().getData();
-            if(list.size()<=0){
-                return null;
-            }
-            result=new ArrayList<MyExam>();
-            Iterator it = list.iterator();
-            while(it.hasNext()) {
-                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),MyExam.class));
-            }
-        }
-        return result;
-//        return adminDao.findScoreByExam(sexam);
+//        List<MyExam> result=null;
+//        String url=this.getBaseUrl("exam-service");
+//        if(sexam!=null) {
+//            url += "/score/findScoreByExam?eid=" + sexam;
+//        }else{
+//            url+="/score/findScoreByExam";
+//        }
+//        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+//        if(response.getBody().getCode()==200){
+//            List list=(List)response.getBody().getData();
+//            if(list.size()<=0){
+//                return null;
+//            }
+//            result=new ArrayList<MyExam>();
+//            Iterator it = list.iterator();
+//            while(it.hasNext()) {
+//                result.add(ConvertUtil.parseMap2Object((Map<String, Object>)it.next(),MyExam.class));
+//            }
+//        }
+//        return result;
+        return adminDao.findScoreByExam(sexam);
     }
 
     /**
@@ -172,15 +176,15 @@ public class AdminService extends BaseService {
      * @return
      */
     public MyExam findScoreById(Integer id) {
-        MyExam result=null;
-        String url=this.getBaseUrl("exam-service");
-        url+="/score/queryPersonExamByMyExam?id="+id;
-        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
-        if(response.getBody().getCode()==200){
-            result=(MyExam)response.getBody().getData();
-        }
-        return result;
-//        return adminDao.findScoreById(id);
+//        MyExam result=null;
+//        String url=this.getBaseUrl("exam-service");
+//        url+="/score/queryPersonExamByMyExam?id="+id;
+//        ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
+//        if(response.getBody().getCode()==200){
+//            result=(MyExam)ConvertUtil.parseMap2Object((Map<String, Object>) response.getBody().getData(),MyExam.class);
+//        }
+//        return result;
+        return adminDao.findScoreById(id);
     }
 
     /**
@@ -190,7 +194,7 @@ public class AdminService extends BaseService {
      */
     public int updateScore(MyExam myExam) {
         Integer result=0;
-        String url=this.getBaseUrl("user-service");
+        String url=this.getBaseUrl("exam-service");
         url+="/score/updateScore?id="+myExam.getId()+"&score="+myExam.getScore();
         ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
         if(response.getBody().getCode()==200){

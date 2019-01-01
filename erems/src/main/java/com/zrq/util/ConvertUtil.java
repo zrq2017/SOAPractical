@@ -3,10 +3,7 @@ package com.zrq.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConvertUtil {
     /**
@@ -47,6 +44,33 @@ public class ConvertUtil {
             Map.Entry<String, Object> entry = it.next();
             if(entry.getValue()!=null) {
                 result.append(entry.getKey() + "=" + entry.getValue());
+            }
+            count++;
+            if(count<=map.size()){
+                result.append("&");
+            }
+         }
+        return result.toString();
+    }
+
+    public static String map2UrlContainTime(Object object){
+        StringBuffer result=new StringBuffer();
+        Map<String,Object> map=object2Map(object);
+        Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
+        int count=1;
+        if(map.size()>0){
+            result.append("?");
+        }
+        while (it.hasNext()) {
+            Map.Entry<String, Object> entry = it.next();
+            if(entry.getValue()!=null) {
+                if(entry.getValue() instanceof Date){
+                    String str=TimeUtil.formatDate("yyyy-MM-dd HH:mm:ss",(Date)entry.getValue());
+                    System.out.println(str);
+                    result.append(entry.getKey() + "=" + str);
+                }else {
+                    result.append(entry.getKey() + "=" + entry.getValue());
+                }
             }
             count++;
             if(count<=map.size()){

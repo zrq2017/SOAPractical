@@ -7,7 +7,6 @@ import edu.soa.examservice.service.ExamService;
 import edu.soa.examservice.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,7 +71,7 @@ public class ExamController{
      * @param exam
      * @return
      */
-    @PostMapping("saveExam")
+    @RequestMapping("saveExam")
     public ResResult saveExam(Exam exam){
         ResResult rr=null;
         if(exam.getId()!=null){//id不空即为更新操作

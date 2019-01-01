@@ -72,7 +72,7 @@ public class ScoreController {
      * @return
      */
     @RequestMapping("findScoreByExam")
-    public ResResult findScoreByExam(@RequestParam("eid")Integer eid){
+    public ResResult findScoreByExam(@RequestParam(value = "eid",required = false)Integer eid){
         return scoreService.findScoreByExam(eid);
     }
 
