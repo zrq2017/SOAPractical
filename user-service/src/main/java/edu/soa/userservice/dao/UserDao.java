@@ -42,7 +42,7 @@ public interface UserDao {
             "</script>")
     @Results(id="addressOnly",value = {
             @Result(property="address",
-                    column = "address",
+                    column = "address_id",
                     one = @One(select = "edu.soa.userservice.dao.UserDao.findAreaById")
             )
     })

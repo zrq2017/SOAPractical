@@ -51,8 +51,11 @@ public class AdminService extends BaseService {
      */
     public List<Room> searchByNameAndArea(String name, Integer area) {
         List<Room> result=null;
-        String url=this.getBaseUrl("user-service");
-        url+="/user/search?sname="+name+"&sarea="+area;
+        String url=this.getBaseUrl("user-service")+"/user/search";
+        Map<String,Object> map=new HashMap<>();
+        map.put("sname",name);
+        map.put("sarea",area);
+        url+=ConvertUtil.map2Url(map);
         ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
         if(response.getBody().getCode()==200){
             List list=(List)response.getBody().getData();
@@ -80,7 +83,7 @@ public class AdminService extends BaseService {
         url+="/user/room?id="+id;
         ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
         if(response.getBody().getCode()==200){
-            result=(Room)response.getBody().getData();
+            result=(Room)ConvertUtil.parseMap2Object((Map<String, Object>)response.getBody().getData(),Room.class);
         }
         return result;
 //        return adminDao.findRoomById(id);
@@ -95,8 +98,8 @@ public class AdminService extends BaseService {
         Integer result=0;
         String url=this.getBaseUrl("user-service");
         url+="/user/saveRoom";
-        url+=ConvertUtil.map2Url(room);
-        url+="&address.id="+room.getAddress().getId();
+        url+=ConvertUtil.map2UrlRoom(room);
+//        url+="&address.id="+room.getAddress().getId();
         ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
         if(response.getBody().getCode()==200){
             result=1;
@@ -114,8 +117,8 @@ public class AdminService extends BaseService {
         Integer result=0;
         String url=this.getBaseUrl("user-service");
         url+="/user/saveRoom";
-        url+=ConvertUtil.map2Url(room);
-        url+="&address.id="+room.getAddress().getId();
+        url+=ConvertUtil.map2UrlRoom(room);
+//        url+="&address.id="+room.getAddress().getId();
         ResponseEntity<ResResult> response = restTemplate.getForEntity(url,ResResult.class);
         if(response.getBody().getCode()==200){
             result=1;

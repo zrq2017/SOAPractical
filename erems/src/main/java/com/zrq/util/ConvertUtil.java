@@ -53,6 +53,36 @@ public class ConvertUtil {
         return result.toString();
     }
 
+    /**
+     * 属性中有对象的
+     * @param object
+     * @return
+     */
+    public static String map2UrlRoom(Object object){
+        StringBuffer result=new StringBuffer();
+        Map<String,Object> map=object2Map(object);
+        Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
+        int count=1;
+        if(map.size()>0){
+            result.append("?");
+        }
+        while (it.hasNext()) {
+            Map.Entry<String, Object> entry = it.next();
+            if(entry.getValue()!=null) {
+                if(entry.getValue() instanceof JSONObject){
+                    result.append(entry.getKey()+".id=" + ((JSONObject)entry.getValue()).get("id"));
+                }else {
+                    result.append(entry.getKey() + "=" + entry.getValue());
+                }
+            }
+            count++;
+            if(count<=map.size()){
+                result.append("&");
+            }
+         }
+        return result.toString();
+    }
+
     public static String map2UrlContainTime(Object object){
         StringBuffer result=new StringBuffer();
         Map<String,Object> map=object2Map(object);
