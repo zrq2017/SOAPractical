@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8085
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/erems?useUnicode=true&characterEncoding=utf8
@@ -7,18 +7,18 @@ spring:
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
   application:
-    name: user-service # Ó¦ÓÃÃû³Æ
+    name: user-service # Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   main:
-    allow-bean-definition-overriding: true #µ±Óöµ½Í¬ÑùÃû×ÖµÄÊ±ºò£¬ÊÇ·ñÔÊÐí¸²¸Ç×¢²á
+    allow-bean-definition-overriding: true #ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Ê±ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
 eureka:
   client:
-    service-url: # EurekaServerµØÖ·
+    service-url: # EurekaServerï¿½ï¿½Ö·
       defaultZone: http://127.0.0.1:10086/eureka
   instance:
-    prefer-ip-address: true # µ±µ÷ÓÃgetHostname»ñÈ¡ÊµÀýµÄhostnameÊ±£¬·µ»Øip¶ø²»ÊÇhostÃû³Æ
-    ip-address: 127.0.0.1 # Ö¸¶¨×Ô¼ºµÄipÐÅÏ¢£¬²»Ö¸¶¨µÄ»°»á×Ô¼ºÑ°ÕÒ
+    prefer-ip-address: true # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½getHostnameï¿½ï¿½È¡Êµï¿½ï¿½ï¿½ï¿½hostnameÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ipï¿½ï¿½ï¿½ï¿½ï¿½ï¿½hostï¿½ï¿½ï¿½ï¿½
+    ip-address: 127.0.0.1 # Ö¸ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ipï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½Ñ°ï¿½ï¿½
 
-#×Ô¶¨ÒåÊôÐÔ
-#Ò³Ãæ´óÐ¡
+#ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#Ò³ï¿½ï¿½ï¿½Ð¡
 page:
   size: 6
